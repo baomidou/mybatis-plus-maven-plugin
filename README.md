@@ -1,2 +1,4 @@
 # mybatisplus-maven-plugin
-Mybatis-Plus Code Generation Maven Plugin
+
+mybatis-plus code generator for maven plugin
+
