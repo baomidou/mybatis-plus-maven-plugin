@@ -1,0 +1,52 @@
+package ${package.Entity};
+
+import com.baomidou.mybatisplus.annotations.TableField;
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+
+import java.io.Serializable;
+#if(${table.hasDate})
+import java.util.Date;
+#end
+
+/**
+ * ${table.comment}
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+@TableName("${table.name}")
+public class ${entity} implements Serializable {
+
+    @TableField(exist = false)
+    private static final long serialVersionUID = 1L;
+
+    #foreach($field in ${table.fields})
+    /**
+     * ${field.comment}
+     */
+    #if(${field.keyFlag})
+    @TableId(type = IdType.${idGenType})
+    #end
+    #if($field.convert)
+    @TableField(value="${field.name}")
+    #end
+    private ${field.propertyType} ${field.propertyName};
+    #end
+
+    #foreach($field in ${table.fields})
+        #if(${field.propertyName.equals("Boolean")})
+            #set($getprefix="is")
+            #else
+            #set($getprefix="get")
+        #end
+
+    public ${field.propertyType} ${getprefix}${field.capitalName}() {
+        return ${field.propertyName};
+    }
+
+    public void set${field.capitalName}(${field.propertyType} ${field.propertyName}) {
+        this.${field.propertyName} = ${field.propertyName};
+    }
+    #end
+}

@@ -1,0 +1,14 @@
+package ${package.Mapper};
+
+import ${package.Entity}.${entity};
+import com.baomidou.mybatisplus.mapper.AutoMapper;
+
+/**
+ * Mapper接口
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+public interface ${table.mapperName} extends AutoMapper<${entity}> {
+
+}
