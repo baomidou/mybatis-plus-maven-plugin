@@ -1,5 +1,5 @@
 ##mybatisplus-maven-plugin 简介
-  * [mybatis-plus](http://git.oschina.net/juapk/mybatis-plus) 代码生成工具的 maven 插件版本
+  * [mybatis-plus](http://git.oschina.net/baomidou/mybatis-plus) 代码生成工具的 maven 插件版本
   * 所有配置均包含在以下的xml中
     
 ```xml
