@@ -90,16 +90,25 @@ public class TableInfo {
         this.fields = fields;
     }
 
+    /**
+     * 转换filed实体为xmlmapper中的basecolumn字符串信息
+     *
+     * @return
+     */
     public String getFieldNames() {
         if (StringUtils.isBlank(fieldNames)) {
-            //此处设置值是因为后面的+=会自动添加一个null字符串
-            fieldNames = "";
-            for (TableField field : fields) {
-                fieldNames += field.getName() + ", ";
+            StringBuilder names = new StringBuilder();
+            for (int i = 0; i < fields.size(); i++) {
+                TableField fd = fields.get(i);
+                if (i == fields.size() - 1) {
+                    names.append(cov2col(fd));
+                } else {
+                    names.append(cov2col(fd)).append(", ");
+                }
             }
+            fieldNames = names.toString();
         }
-        // -2 是多一个空格与一个逗号
-        return fieldNames.substring(0, fieldNames.length() - 2);
+        return fieldNames;
     }
 
     /**
@@ -115,5 +124,18 @@ public class TableInfo {
             }
         }
         return hasDate;
+    }
+
+    /**
+     * mapper xml中的字字段添加as
+     *
+     * @param field 字段实体
+     * @return 转换后的信息
+     */
+    private String cov2col(TableField field) {
+        if (null != field) {
+            return field.isConvert() ? field.getName() + " AS " + field.getPropertyName() : field.getName();
+        }
+        return StringUtils.EMPTY;
     }
 }

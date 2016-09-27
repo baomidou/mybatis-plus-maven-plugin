@@ -86,7 +86,7 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.2</version>
                 <configuration>
-                    <goalPrefix>mybatisplus-maven-plugin</goalPrefix>
+                    <goalPrefix>mybatisplus</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
@@ -112,7 +112,7 @@
                 <version>1.0.0</version>
                 <configuration>
                     <!-- 输出目录(默认java.io.tmpdir) -->
-                    <outputDir>e:\cache</outputDir>
+                    <outputDir>/Users/cxdev/Documents</outputDir>
                     <!-- 是否覆盖同名文件(默认false) -->
                     <fileOverride>true</fileOverride>
                     <!-- mapper.xml 中添加二级缓存配置(默认true) -->
@@ -122,7 +122,7 @@
                     <!-- 数据源配置，(必配) -->
                     <dataSource>
                         <driverName>com.mysql.jdbc.Driver</driverName>
-                        <url>jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&amp;useSSL=false</url>
+                        <url>jdbc:mysql://127.0.0.1:3306/mybatis-plus?useUnicode=true&amp;useSSL=false</url>
                         <username>root</username>
                         <password>123456</password>
                     </dataSource>
@@ -140,12 +140,12 @@
                         <!--自定义超类-->
                         <!--<superServiceClass>net.hyman.base.BaseService</superServiceClass>-->
                         <!-- 要包含的表 与exclude 二选一配置-->
-                        <!--<include>-->
-                            <!--<property>sec_user</property>-->
-                            <!--<property>table1</property>-->
-                        <!--</include>-->
+                        <include>
+                            <property>sys_users</property>
+                        </include>
                         <!-- 要排除的表 -->
                         <!--<exclude>-->
+                            <!--<property>schema_version</property>-->
                             <!--<property>schema_version</property>-->
                         <!--</exclude>-->
                     </strategy>
