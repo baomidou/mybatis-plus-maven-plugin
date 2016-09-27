@@ -17,7 +17,6 @@ import java.util.*;
 
 /**
  * 生成文件
- *
  * @author YangHu
  * @since 2016/8/30
  */
@@ -172,7 +171,7 @@ public class GenerateMojo extends AbstractGenerateMojo {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, ConstVal.UTF8));
         template.merge(context, writer);
         writer.close();
-        System.out.println("模板:" + templatePath + ";  文件:" + outputFile);
+        log.info("模板:" + templatePath + ";  文件:" + outputFile);
     }
 
     /**
