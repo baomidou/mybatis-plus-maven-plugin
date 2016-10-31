@@ -19,7 +19,7 @@ public enum QuerySQL {
                     "WHERE A.TABLE_NAME = B.TABLE_NAME AND A.COLUMN_NAME = B.COLUMN_NAME AND A.TABLE_NAME = '%s') AB " +
                     "LEFT JOIN(SELECT CU.COLUMN_NAME, CU.POSITION FROM USER_CONS_COLUMNS CU, USER_CONSTRAINTS AU " +
                     "WHERE CU.CONSTRAINT_NAME = AU.CONSTRAINT_NAME AND AU.CONSTRAINT_TYPE = 'P' " +
-                    "AND AU.TABLE_NAME = '%s') AC ON AB.COLUMN_NAME = AC.COLUMN_NAME",
+                    "AND AU.TABLE_NAME = '%s') AC ON AB.COLUMN_NAME = AC.COLUMN_NAME ",
             "TABLE_NAME", "COMMENTS", "COLUMN_NAME", "DATA_TYPE", "COMMENTS", "KEY");
 
     private final String dbType;
