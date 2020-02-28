@@ -3,6 +3,7 @@ package com.baomidou;
 import com.baomidou.config.ConstVal;
 import com.baomidou.config.builder.ConfigBuilder;
 import com.baomidou.config.po.TableInfo;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -17,6 +18,7 @@ import java.util.*;
 
 /**
  * 生成文件
+ *
  * @author YangHu
  * @since 2016/8/30
  */
@@ -116,11 +118,26 @@ public class GenerateMojo extends AbstractGenerateMojo {
     private void initOutputFiles() {
         outputFiles = new HashMap<String, String>();
         Map<String, String> pathInfo = config.getPathInfo();
-        outputFiles.put(ConstVal.ENTITY, pathInfo.get(ConstVal.ENTITY_PATH) + ConstVal.ENTITY_NAME);
-        outputFiles.put(ConstVal.MAPPER, pathInfo.get(ConstVal.MAPPER_PATH) + ConstVal.MAPPER_NAME);
-        outputFiles.put(ConstVal.XML, pathInfo.get(ConstVal.XML_PATH) + ConstVal.XML_NAME);
-        outputFiles.put(ConstVal.SERIVCE, pathInfo.get(ConstVal.SERIVCE_PATH) + ConstVal.SERVICE_NAME);
-        outputFiles.put(ConstVal.SERVICEIMPL, pathInfo.get(ConstVal.SERVICEIMPL_PATH) + ConstVal.SERVICEIMPL_NAME);
+        String entityPath = pathInfo.get(ConstVal.ENTITY_PATH);
+        if (StringUtils.isNotBlank(entityPath)) {
+            outputFiles.put(ConstVal.ENTITY, entityPath + ConstVal.ENTITY_NAME);
+        }
+        String mapperPath = pathInfo.get(ConstVal.MAPPER_PATH);
+        if (StringUtils.isNotBlank(mapperPath)) {
+            outputFiles.put(ConstVal.MAPPER, mapperPath + ConstVal.MAPPER_NAME);
+        }
+        String xmlPath = pathInfo.get(ConstVal.XML_PATH);
+        if (StringUtils.isNotBlank(xmlPath)) {
+            outputFiles.put(ConstVal.XML, xmlPath + ConstVal.XML_NAME);
+        }
+        String servicePath = pathInfo.get(ConstVal.SERIVCE_PATH);
+        if (StringUtils.isNotBlank(servicePath)) {
+            outputFiles.put(ConstVal.SERIVCE, servicePath + ConstVal.SERVICE_NAME);
+        }
+        String serviceImplPath = pathInfo.get(ConstVal.SERVICEIMPL_PATH);
+        if (StringUtils.isNotBlank(serviceImplPath)) {
+            outputFiles.put(ConstVal.SERVICEIMPL, serviceImplPath + ConstVal.SERVICEIMPL_NAME);
+        }
     }
 
     /**
@@ -130,27 +147,40 @@ public class GenerateMojo extends AbstractGenerateMojo {
      */
     private void batchOutput(String entityName, VelocityContext context) {
         try {
-            String entityFile = String.format(outputFiles.get(ConstVal.ENTITY), entityName);
-            String mapperFile = String.format(outputFiles.get(ConstVal.MAPPER), entityName);
-            String xmlFile = String.format(outputFiles.get(ConstVal.XML), entityName);
-            String serviceFile = String.format(outputFiles.get(ConstVal.SERIVCE), entityName);
-            String implFile = String.format(outputFiles.get(ConstVal.SERVICEIMPL), entityName);
-
-            // 根据override标识来判断是否需要创建文件
-            if (isCreate(entityFile)) {
-                vmToFile(context, ConstVal.TEMPLATE_ENTITY, entityFile);
+            String entityPath = outputFiles.get(ConstVal.ENTITY);
+            if (StringUtils.isNotBlank(entityPath)) {
+                String entityFile = String.format(entityPath, entityName);
+                if (createOrOverride(entityFile)) {
+                    vmToFile(context, ConstVal.TEMPLATE_ENTITY, entityFile);
+                }
             }
-            if (isCreate(mapperFile)) {
-                vmToFile(context, ConstVal.TEMPLATE_MAPPER, mapperFile);
+            String mapperPath = outputFiles.get(ConstVal.MAPPER);
+            if (StringUtils.isNotBlank(mapperPath)) {
+                String mapperFile = String.format(mapperPath, entityName);
+                if (createOrOverride(mapperFile)) {
+                    vmToFile(context, ConstVal.TEMPLATE_MAPPER, mapperFile);
+                }
             }
-            if (isCreate(xmlFile)) {
-                vmToFile(context, ConstVal.TEMPLATE_XML, xmlFile);
+            String xmlPath = outputFiles.get(ConstVal.XML);
+            if (StringUtils.isNotBlank(xmlPath)) {
+                String xmlFile = String.format(xmlPath, entityName);
+                if (createOrOverride(xmlFile)) {
+                    vmToFile(context, ConstVal.TEMPLATE_XML, xmlFile);
+                }
             }
-            if (isCreate(serviceFile)) {
-                vmToFile(context, ConstVal.TEMPLATE_SERVICE, serviceFile);
+            String servicePath = outputFiles.get(ConstVal.SERIVCE);
+            if (StringUtils.isNotBlank(servicePath)) {
+                String serviceFile = String.format(servicePath, entityName);
+                if (createOrOverride(serviceFile)) {
+                    vmToFile(context, ConstVal.TEMPLATE_SERVICE, serviceFile);
+                }
             }
-            if (isCreate(implFile)) {
-                vmToFile(context, ConstVal.TEMPLATE_SERVICEIMPL, implFile);
+            String serviceImplPath = outputFiles.get(ConstVal.SERVICEIMPL);
+            if (StringUtils.isNotBlank(serviceImplPath)) {
+                String implFile = String.format(serviceImplPath, entityName);
+                if (createOrOverride(implFile)) {
+                    vmToFile(context, ConstVal.TEMPLATE_SERVICEIMPL, implFile);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,7 +226,7 @@ public class GenerateMojo extends AbstractGenerateMojo {
      *
      * @return 是否
      */
-    private boolean isCreate(String filePath) {
+    private boolean createOrOverride(String filePath) {
         File file = new File(filePath);
         return !file.exists() || isFileOverride();
     }
