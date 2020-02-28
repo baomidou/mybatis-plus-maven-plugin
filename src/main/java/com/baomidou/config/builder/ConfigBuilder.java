@@ -7,7 +7,6 @@ import com.baomidou.config.StrategyConfig;
 import com.baomidou.config.po.TableField;
 import com.baomidou.config.po.TableInfo;
 import com.baomidou.config.rules.*;
-import javafx.scene.control.Tab;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
@@ -127,18 +126,32 @@ public class ConfigBuilder {
      */
     private void handlerPackage(String outputDir, PackageConfig config) {
         packageInfo = new HashMap<String, String>();
-        packageInfo.put(ConstVal.ENTITY, joinPackage(config.getParent(), config.getEntity()));
-        packageInfo.put(ConstVal.MAPPER, joinPackage(config.getParent(), config.getMapper()));
-        packageInfo.put(ConstVal.XML, joinPackage(config.getParent(), config.getXml()));
-        packageInfo.put(ConstVal.SERIVCE, joinPackage(config.getParent(), config.getService()));
-        packageInfo.put(ConstVal.SERVICEIMPL, joinPackage(config.getParent(), config.getServiceImpl()));
-
         pathInfo = new HashMap<String, String>();
-        pathInfo.put(ConstVal.ENTITY_PATH, joinPath(outputDir, packageInfo.get(ConstVal.ENTITY)));
-        pathInfo.put(ConstVal.MAPPER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.MAPPER)));
-        pathInfo.put(ConstVal.XML_PATH, joinPath(outputDir, packageInfo.get(ConstVal.XML)));
-        pathInfo.put(ConstVal.SERIVCE_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERIVCE)));
-        pathInfo.put(ConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEIMPL)));
+        String entityPath = config.getEntity();
+        if (StringUtils.isNotBlank(entityPath)) {
+            packageInfo.put(ConstVal.ENTITY, joinPackage(config.getParent(), entityPath));
+            pathInfo.put(ConstVal.ENTITY_PATH, joinPath(outputDir, packageInfo.get(ConstVal.ENTITY)));
+        }
+        String mapperPath = config.getMapper();
+        if (StringUtils.isNotBlank(mapperPath)) {
+            packageInfo.put(ConstVal.MAPPER, joinPackage(config.getParent(), mapperPath));
+            pathInfo.put(ConstVal.MAPPER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.MAPPER)));
+        }
+        String xmlPath = config.getXml();
+        if (StringUtils.isNotBlank(xmlPath)) {
+            packageInfo.put(ConstVal.XML, joinPackage(config.getParent(), xmlPath));
+            pathInfo.put(ConstVal.XML_PATH, joinPath(outputDir, packageInfo.get(ConstVal.XML)));
+        }
+        String servicePath = config.getService();
+        if (StringUtils.isNotBlank(servicePath)) {
+            packageInfo.put(ConstVal.SERIVCE, joinPackage(config.getParent(), servicePath));
+            pathInfo.put(ConstVal.SERIVCE_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERIVCE)));
+        }
+        String serviceImplPath = config.getServiceImpl();
+        if (StringUtils.isNotBlank(serviceImplPath)) {
+            packageInfo.put(ConstVal.SERVICEIMPL, joinPackage(config.getParent(), serviceImplPath));
+            pathInfo.put(ConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEIMPL)));
+        }
     }
 
     /**
